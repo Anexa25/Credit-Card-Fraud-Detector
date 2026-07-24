@@ -3,7 +3,8 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
+from sklearn.metrics import classification_report, confusion_matrix, accuracy_score, average_precision_score
+
 
 print("program started")
 
@@ -60,8 +61,14 @@ model = LogisticRegression()
 
 model.fit(X_train, y_train) #training the model
 
-# Prefictions
+# Predictions
 y_pred = model.predict(X_test)
+
+
+#AUPRC
+y_prob = model.predict_proba(X_test)[:, 1]
+auprc = average_precision_score(y_test, y_prob)
+print(f"AUPRC: {auprc}")
 
 
 # Evaluation - Display results
@@ -70,3 +77,4 @@ print(f"Accuracy: {accuracy_score(y_test, y_pred)}")
 print(f"Confusion Matrix: {confusion_matrix(y_test, y_pred)}")
 
 print(f"Classification Report: {classification_report(y_test, y_pred)}")
+
