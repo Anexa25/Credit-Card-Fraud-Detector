@@ -41,3 +41,13 @@ X_train, X_test, y_train, y_test = train_test_split(
     stratify=y #so training and testing keeps same amount of fraud
 )
 
+
+#Scaling the features
+scaler = StandardScaler()
+
+X_train = scaler.fit_transform(X_train) #only learning scaling from training data
+X_test = scaler.transform(X_test)
+
+
+print("Training samples: ",len(X_train))
+print("Testing samples: ",len(X_test))
