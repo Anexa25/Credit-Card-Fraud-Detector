@@ -30,3 +30,14 @@ print(df["Class"].value_counts())
 # Seperating features and targets 
 X = df.drop("Class", axis=1) # Contains transaction details
 y = df["Class"] # Contains the answer for model to learn
+
+
+#Splitting data into training and testing data
+X_train, X_test, y_train, y_test = train_test_split(
+    X,
+    y,
+    test_size=0.2,
+    random_state=42,
+    stratify=y #so training and testing keeps same amount of fraud
+)
+
