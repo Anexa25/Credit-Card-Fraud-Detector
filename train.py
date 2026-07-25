@@ -5,6 +5,8 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score, average_precision_score
 
+from sklearn.ensemble import RandomForestClassifier
+
 
 print("program started")
 
@@ -56,25 +58,56 @@ print("Training samples: ",X_train.shape)
 print("Testing samples: ",X_test.shape)
 
 
-# Train model
-model = LogisticRegression()
+# # Train model - Using logistic regression model
+# model = LogisticRegression()
 
-model.fit(X_train, y_train) #training the model
+# model.fit(X_train, y_train) #training the model
+
+# # Predictions
+# y_pred = model.predict(X_test)
+
+
+# #AUPRC
+# y_prob = model.predict_proba(X_test)[:, 1]
+# auprc = average_precision_score(y_test, y_prob)
+# print(f"AUPRC: {auprc}")
+
+
+# # Evaluation - Display results
+# print(f"Accuracy: {accuracy_score(y_test, y_pred)}")
+
+# print(f"Confusion Matrix: {confusion_matrix(y_test, y_pred)}")
+
+# print(f"Classification Report: {classification_report(y_test, y_pred)}")
+
+
+
+# Upgraded model - Random Forest Classifier
+
+rf_model = RandomForestClassifier(
+    n_estimators=100, #build 100 decision trees
+    random_state=42, #makes results reproducable
+    class_weight="balanced" #gives more importance to rare fraud cases during training
+)
+
+
+print("Training Random Forest Model")
+
+rf_model.fit(X_train,y_train)
 
 # Predictions
-y_pred = model.predict(X_test)
+rf_predictions = rf_model.predict(X_test)
+rf_probabilities = rf_model.predict_proba(X_test)[:,1]
 
 
-#AUPRC
-y_prob = model.predict_proba(X_test)[:, 1]
-auprc = average_precision_score(y_test, y_prob)
-print(f"AUPRC: {auprc}")
+# Evaluation:
+rf_auprc = average_precision_score(y_test, rf_probabilities)
 
+print("Random Forst Results")
+print(f"Accuracy: {accuracy_score(y_test, rf_predictions)}")
 
-# Evaluation - Display results
-print(f"Accuracy: {accuracy_score(y_test, y_pred)}")
+print(f"Confustion Matrix: {confusion_matrix(y_test, rf_predictions)}")
 
-print(f"Confusion Matrix: {confusion_matrix(y_test, y_pred)}")
+print(f"Classification Report: {classification_report(y_test, rf_predictions)}")
 
-print(f"Classification Report: {classification_report(y_test, y_pred)}")
-
+print(f"AUPRC: {rf_auprc}")
