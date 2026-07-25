@@ -1,4 +1,5 @@
 import pandas as pd
+import joblib
 
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
@@ -6,6 +7,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score, average_precision_score
 
 from sklearn.ensemble import RandomForestClassifier
+
 
 
 print("program started")
@@ -135,3 +137,11 @@ def train_random_forest(X_train, X_test, y_train, y_test):
 logistic_model = train_logistic_regression(X_train, X_test, y_train, y_test)
 
 rf_model = train_random_forest(X_train, X_test, y_train, y_test)
+
+
+
+# Save best model and scaler
+joblib.dump(rf_model, "models/fraud_model.pkl")
+joblib.dump(scaler, "models/scaler.pkl")
+
+print("Succesfully saved model and scaler")
