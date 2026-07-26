@@ -94,8 +94,6 @@ def train_logistic_regression(X_train, X_test, y_train, y_test):
 
 
 
-
-
 # Upgraded model - Random Forest Classifier
 
 def train_random_forest(X_train, X_test, y_train, y_test):
@@ -145,3 +143,4 @@ joblib.dump(rf_model, "models/fraud_model.pkl")
 joblib.dump(scaler, "models/scaler.pkl")
 
 print("Succesfully saved model and scaler")
+
