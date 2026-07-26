@@ -20,7 +20,8 @@ if uploaded_file is not None:
     if "Class" in data.columns:
         data = data.drop("Class", axis=1)
     
-    st.subheader("Uploaded Data")
+    st.subheader("Uploaded Data",
+                 help="Displays first five transactions the uploaded file.")
     
     st.dataframe(data.head())
     
