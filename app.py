@@ -71,18 +71,40 @@ if uploaded_file is not None:
         
         fraud_percentage = (fraud_count/total_transactions)*100
         
+        
+        #Risk calculation
+        if fraud_percentage < 1:
+            risk_level = "Low risk"
+        elif fraud_percentage < 5:
+            risk_level = "Medium risk"
+        else:
+            risk_level = "High risk"
+        
+        
         st.subheader("Summary")
         
-        col1, col2, col3 = st.columns(3)
+        col1, col2, col3, col4= st.columns(4)
         
         with col1:
-            st.metric("Total Transactions", total_transactions)
+            st.metric(label="Total Transactions", 
+                      value=total_transactions,
+                      help="The total number of transactions analysed by the fraud detection model.")
+            
             
         with col2:
-            st.metric("Fraud Detected", fraud_count)
+            st.metric(label="Fraud Detected", 
+                      value=fraud_count,
+                      help="The number of transactions classified as potentially fraudulent by the model.")
             
         with col3:
-            st.metric("Fraud Rate", f"{fraud_percentage:.2f}%")
+            st.metric(label="Fraud Rate", 
+                      value=f"{fraud_percentage:.2f}%",
+                      help="The percentage of analysed transactions predicted to be fraudulent.")
+            
+        with col4:
+            st.metric(label="Risk Level", 
+                      value=risk_level,
+                      help="An overall risk classification based on the percentage of transcations predicted as fraudulant.")
             
             
         #Download results
