@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from model import predict_transaction
+from model import predict_transactions
 
 st.title("Credit Card Fruad Detector")
 
@@ -26,23 +26,33 @@ if uploaded_file is not None:
     
     
     
+    
     if st.button("Analyse Transactions"):
         st.info("Loading model and analysing transactions")
         
-        predictions = []
-        probabilities = []
         
         
-        for _, row in data.iterrows():
-            prediction, probability = predict_transaction(
-                pd.DataFrame([row])
-            )
+        # Data going through model
+        # predictions = []
+        # probabilities = []
+        
+        
+        # for _, row in data.iterrows():
+        #     prediction, probability = predict_transaction(
+        #         pd.DataFrame([row])
+        #     )
             
-            predictions.append(prediction)
-            probabilities.append(probability)
+        #     predictions.append(prediction)
+        #     probabilities.append(probability)
+        
+        predictions, probabilities = predict_transactions(data)
             
         data["Predictions"] = predictions
         data["Fraud Probability"] = probabilities
+        
+        
+        
+        
         
         
         # Replaces 1 & 0 with Fraud & Legitimate
@@ -66,7 +76,7 @@ if uploaded_file is not None:
         
         
         #Summary table
-        fraud_count = predictions.count(1)
+        fraud_count = (predictions==1).sum()
         total_transactions = len(predictions)
         
         fraud_percentage = (fraud_count/total_transactions)*100
@@ -87,7 +97,7 @@ if uploaded_file is not None:
         
         with col1:
             st.metric(label="Total Transactions", 
-                      value=total_transactions,
+                      value=f"{total_transactions:,}",
                       help="The total number of transactions analysed by the fraud detection model.")
             
             
@@ -114,7 +124,7 @@ if uploaded_file is not None:
         st.download_button(
             label="Download Results",
             data=csv,
-            file_name="fraud_detection_results",
+            file_name="fraud_detection_results.csv",
             mime="text/csv"
         )
         

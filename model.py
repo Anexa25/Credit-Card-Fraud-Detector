@@ -8,18 +8,18 @@ scaler = joblib.load("models/scaler.pkl")
 print("Successfully loaded model and scaler")
 
 
-def predict_transaction(transaction):
+def predict_transactions(transactions):
     
     #Scale transaction
-    scaled_transaction = scaler.transform(transaction)
+    scaled_transactions = scaler.transform(transactions)
     
     #Make prediction
-    prediction = model.predict(scaled_transaction)
+    predictions = model.predict(scaled_transactions)
     
     #get fraud probability
-    probability = model.predict_proba(scaled_transaction)[:,1]
+    probabilities = model.predict_proba(scaled_transactions)[:,1]
     
-    return prediction[0], probability[0]
+    return predictions, probabilities
     
     
     
